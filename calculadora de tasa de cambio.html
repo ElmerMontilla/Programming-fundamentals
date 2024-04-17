@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .calculator {
+            width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        #display {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            text-align: right;
+        }
+
+        .buttons button {
+            width: 50px;
+            height: 50px;
+            margin: 5px;
+            font-size: 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .buttons button:hover {
+            background-color: lightgray;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="calculator">
+        <input type="text" id="display" readonly>
+        <div class="buttons">
+            <button onclick="addToDisplay('7')">7</button>
+            <button onclick="addToDisplay('8')">8</button>
+            <button onclick="addToDisplay('9')">9</button>
+            <button onclick="setOperator('+')">+</button>
+            <button onclick="addToDisplay('4')">4</button>
+            <button onclick="addToDisplay('5')">5</button>
+            <button onclick="addToDisplay('6')">6</button>
+            <button onclick="setOperator('-')">-</button>
+            <button onclick="addToDisplay('1')">1</button>
+            <button onclick="addToDisplay('2')">2</button>
+            <button onclick="addToDisplay('3')">3</button>
+            <button onclick="setOperator('*')">*</button>
+            <button onclick="addToDisplay('0')">0</button>
+            <button onclick="addToDisplay('.')">.</button>
+            <button onclick="clearLastDigit()">DEL</button>
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="calculate()">=</button>
+            <button onclick="setOperator('/')">/</button>
+            <button onclick="calculateFactorial()">!</button>
+        </div>
+        <div id="history"></div>
+    </div>
+
+    <script>
+        let currentValue = '0';
+        let previousValue = 0;
+        let operator = null;
+        let history = [];
+
+        function updateDisplay() {
+            document.getElementById('display').value = currentValue;
+        }
+
+        function addToDisplay(number) {
+            if (currentValue === '0') {
+                currentValue = number;
+            } else {
+                currentValue += number;
+            }
+            updateDisplay();
+        }
+
+        function setOperator(op) {
+            operator = op;
+            previousValue = parseFloat(currentValue);
+            currentValue = '0';
+        }
+
+        function calculate() {
+            const currentValueFloat = parseFloat(currentValue);
+            let result;
+            switch (operator) {
+                case '+':
+                    result = previousValue + currentValueFloat;
+                    break;
+                case '-':
+                    result = previousValue - currentValueFloat;
+                    break;
+                case '*':
+                    result = previousValue * currentValueFloat;
+                    break;
+                case '/':
+                    if (currentValueFloat === 0) {
+                        alert("No se puede dividir por cero");
+                        return;
+                    }
+                    result = previousValue / currentValueFloat;
+                    break;
+            }
+            history.push(`${previousValue} ${operator} ${currentValueFloat} = ${result}`);
+            updateHistory();
+            currentValue = result.toString();
+            updateDisplay();
+            operator = null;
+        }
+
+        function clearDisplay() {
+            currentValue = '0';
+            updateDisplay();
+        }
+
+        function clearLastDigit() {
+            currentValue = currentValue.slice(0, -1);
+            if (currentValue === '') {
+                currentValue = '0';
+            }
+            updateDisplay();
+        }
+
+        function calculateFactorial() {
+            const num = parseFloat(currentValue);
+            if (num < 0 || !Number.isInteger(num)) {
+                alert("El factorial solo está definido para números enteros no negativos");
+                return;
+            }
+            let result = 1;
+            for (let i = 2; i <= num; i++) {
+                result *= i;
+            }
+            currentValue = result.toString();
+            updateDisplay();
+            history.push(`Factorial de ${num} = ${result}`);
+            updateHistory();
+        }
+
+        function updateHistory() {
+            const historyElement = document.getElementById('history');
+            historyElement.innerHTML = '';
+            for (let i = 0; i < history.length; i++) {
+                const historyItem = document.createElement('div');
+                historyItem.textContent = history[i];
+                historyElement.appendChild(historyItem);
+            }
+        }
+
+        updateDisplay();
+    </script>
+</body>
+</html>
