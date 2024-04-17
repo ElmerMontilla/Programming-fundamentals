@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasa de Cambio</title>
+</head>
+<body>
+    <h1>Calculadora de Tasa de Cambio</h1>
+    <label for="monto">Monto a cambiar:</label>
+    <input type="number" id="monto" step="0.01">
+    <br>
+    <label for="moneda">Selecciona la moneda:</label>
+    <select id="moneda">
+        <option value="CNY">Yuan Chino (CNY)</option>
+        <option value="USD">Dólar Estadounidense (USD)</option>
+        <option value="MXN">Peso Mexicano (MXN)</option>
+        <option value="COP">Peso Colombiano (COP)</option>
+    </select>
+    <br>
+    <button onclick="calcular()">Calcular</button>
+    <br>
+    <p id="resultado"></p>
+
+    <script>
+        function calcular() {
+            const monto = parseFloat(document.getElementById("monto").value);
+            const moneda = document.getElementById("moneda").value;
+            let tasaCambio = 0;
+            let total = 0;
+
+            switch (moneda) {
+                case "CNY":
+                    tasaCambio = 537.76375; // Tasa de cambio Yuan Chino a Peso Colombiano
+                    break;
+                case "USD":
+                    tasaCambio = 0.1406878; // Tasa de cambio Dólar Estadounidense a Yuan Chino
+                    break;
+                case "MXN":
+                    tasaCambio = 2.3699587; // Tasa de cambio Peso Mexicano a Yuan Chino
+                    break;
+                case "COP":
+                    tasaCambio = 1 / 537.76375; // Tasa de cambio Peso Colombiano a Yuan Chino
+                    break;
+                default:
+                    break;
+            }
+
+            total = monto * tasaCambio;
+
+            if (total > 10000 && total <= 20000) {
+                total *= 1.10; // Aumentar un 10%
+            } else if (total > 20000) {
+                total *= 1.15; // Aumentar un 15%
+            }
+
+            document.getElementById("resultado").textContent = `Total en Peso Dominicano: RD$ ${total.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>
