@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Tareas</title>
+    <style>
+        /* Estilos básicos (puedes personalizarlos) */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .task-container {
+            display: flex;
+            gap: 10px;
+        }
+        #add-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Lista de Tareas</h1>
+    </header>
+    <main>
+        <div class="task-container">
+            <input type="text" id="task" placeholder="Agregar nueva tarea...">
+            <button id="add-button">Agregar</button>
+        </div>
+        <ul id="task-list">
+            <!-- Aquí se mostrarán las tareas -->
+        </ul>
+    </main>
+    <script>
+        const addButton = document.getElementById('add-button');
+        const taskInput = document.getElementById('task');
+        const taskList = document.getElementById('task-list');
+
+        addButton.addEventListener('click', () => {
+            const taskText = taskInput.value.trim();
+            if (taskText !== '') {
+                addTask(taskText);
+                taskInput.value = '';
+            }
+        });
+
+        taskInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                const taskText = taskInput.value.trim();
+                if (taskText !== '') {
+                    addTask(taskText);
+                    taskInput.value = '';
+                }
+            }
+        });
+
+        function addTask(taskText) {
+            const taskItem = document.createElement('li');
+            taskItem.textContent = taskText;
+            taskList.appendChild(taskItem);
+        }
+    </script>
+</body>
+</html>
