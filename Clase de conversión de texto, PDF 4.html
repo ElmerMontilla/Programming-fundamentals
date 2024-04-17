@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transformador de Texto</title>
+</head>
+<body>
+    <input type="text" id="inputText" placeholder="Escribe un texto...">
+    <button onclick="transformarTexto()">Transformar</button>
+    <p id="resultado"></p>
+
+    <script>
+        class TextoTransformer {
+            constructor(texto) {
+                this.texto = texto;
+            }
+
+            obtenerCantidadCaracteres() {
+                return this.texto.length;
+            }
+
+            convertirAMayuscula() {
+                return this.texto.toUpperCase();
+            }
+
+            convertirAMinuscula() {
+                return this.texto.toLowerCase();
+            }
+
+            esPalindroma() {
+                const textoSinEspacios = this.texto.replace(/\s/g, '').toLowerCase();
+                const textoReverso = textoSinEspacios.split('').reverse().join('');
+                return textoSinEspacios === textoReverso;
+            }
+        }
+
+        function transformarTexto() {
+            const input = document.getElementById('inputText');
+            const texto = input.value;
+
+            const transformer = new TextoTransformer(texto);
+
+            const resultado = document.getElementById('resultado');
+            resultado.innerHTML = `
+                Cantidad de caracteres: ${transformer.obtenerCantidadCaracteres()}<br>
+                En mayúscula: ${transformer.convertirAMayuscula()}<br>
+                En minúscula: ${transformer.convertirAMinuscula()}<br>
+                Es palíndroma: ${transformer.esPalindroma() ? 'Sí' : 'No'}
+            `;
+        }
+    </script>
+</body>
+</html>
